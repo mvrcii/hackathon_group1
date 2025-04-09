@@ -1,12 +1,11 @@
 from src.costs.base import BaseCost
-from src.optimizers import DummyOptimizer
 from src.data import Simulation, CoilConfig
+from src.optimizers.optuna_optimizer import OptunaOptimizer
 
-import numpy as np
 
-def run(simulation: Simulation, 
+def run(simulation: Simulation,
         cost_function: BaseCost,
-        timeout: int = 100) -> CoilConfig:
+        timeout: int = 300) -> CoilConfig:
     """
         Main function to run the optimization, returns the best coil configuration
 
@@ -15,6 +14,11 @@ def run(simulation: Simulation,
             cost_function: Cost function object
             timeout: Time (in seconds) after which the evaluation script will be terminated
     """
-    optimizer = DummyOptimizer(cost_function=cost_function)
-    best_coil_config = optimizer.optimize(simulation)
-    return best_coil_config
+    config = {
+        'max_time_seconds': timeout,  # Use the full available timeout
+        'time_buffer_seconds': 3,  # Buffer to ensure we return before timeout
+        'n_startup_trials': 10,  # Number of random trials before using Bayesian optimization
+    }
+
+    optimizer = OptunaOptimizer(cost_function=cost_function, **config)
+    return optimizer.optimize(simulation)
