@@ -1,0 +1,4 @@
+"Parameter","Recommended Range","Physical Constraint","Citation"
+"Amplitudes","Normalized [0.2, 1.0]","Softmax or L2-normalized","https://i-mri.org/DOIx.php?id=10.13104%2Fimri.2020.24.3.95"
+"Phases","[0, 2π] rad","Periodic boundary handling","https://pmc.ncbi.nlm.nih.gov/articles/PMC6107381/"
+"SAR Control","α ∈ [0.1, 1.0]","Peak SAR ≤ 10 W/kg","https://www.ptb.de/cms/en/ptb/fachabteilungen/abt8/fb-81/ag-814/rf-fields-and-safety-in-uhf-body-mri.html"
