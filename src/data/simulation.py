@@ -75,7 +75,7 @@ class Simulation:
         return field_shift
 
     def phase_shift(self, coil_config: CoilConfig) -> SimulationData:
-        
+        # TODO only shift the subject (using mask??)
         field_shifted = self._shift_field(self.simulation_raw_data.field, coil_config.phase, coil_config.amplitude)
         
         simulation_data = SimulationData(
