@@ -76,6 +76,9 @@ class Simulation:
 
     def phase_shift(self, coil_config: CoilConfig) -> SimulationData:
         # TODO only shift the subject (using mask??)
+        # TODO: get the mask (subject) from the data
+        # TODO: Then only use the relevant data for field shift
+        # TODO: Process the masked part in parallel with multiprocessing ?
         field_shifted = self._shift_field(self.simulation_raw_data.field, coil_config.phase, coil_config.amplitude)
         
         simulation_data = SimulationData(
