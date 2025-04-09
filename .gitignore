@@ -6,3 +6,5 @@
 **.pyo
 **.pyd
 __pycache__/
+
+.idea
