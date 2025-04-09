@@ -27,7 +27,7 @@ def evaluate_coil_config(coil_config: CoilConfig,
     best_coil_config_cost = cost_function(simulation_data)
 
     # Calculate cost improvement
-    cost_improvement_absolute = (default_coil_config_cost - best_coil_config_cost)
+    cost_improvement_absolute = best_coil_config_cost - default_coil_config_cost
     cost_improvement_relative = (best_coil_config_cost - default_coil_config_cost) / default_coil_config_cost
 
     # Create a dictionary to store the results
