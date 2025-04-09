@@ -6,11 +6,14 @@ from src.data import Simulation
 from src.utils import evaluate_coil_config
 
 if __name__ == "__main__":
+    timeout = 300
+    lambda_weight = 0.10
+
     simulation = Simulation("data/simulations/children_0_tubes_2_id_19969.h5")
-    cost_function = B1HomogeneitySARCost(lambda_weight=0.05)
+    cost_function = B1HomogeneitySARCost(lambda_weight=lambda_weight)
 
     # Run optimization
-    best_coil_config = run(simulation=simulation, cost_function=cost_function, timeout=20)
+    best_coil_config = run(simulation=simulation, cost_function=cost_function, timeout=timeout)
 
     # Evaluate best coil configuration
     result = evaluate_coil_config(best_coil_config, simulation, cost_function)

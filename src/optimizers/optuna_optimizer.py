@@ -18,13 +18,13 @@ class OptunaOptimizer(BaseOptimizer):
     def __init__(
             self,
             cost_function: BaseCost,
-            max_time_seconds: int = 100,
-            time_buffer_seconds: int = 3,
-            n_startup_trials: int = 50,
+            timeout: int = 100,
+            time_buffer_seconds: int = 2,
+            n_startup_trials: int = 10,
             verbose: bool = True
     ):
         super().__init__(cost_function)
-        self.max_time_seconds = max_time_seconds
+        self.max_time_seconds = timeout
         self.time_buffer_seconds = time_buffer_seconds
         self.n_startup_trials = n_startup_trials
         self.verbose = verbose
