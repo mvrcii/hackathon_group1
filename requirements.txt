@@ -4,7 +4,6 @@ torch
 einops
 matplotlib
 tqdm
-jupyter
 optuna
 cmaes
 numba
