@@ -4,9 +4,6 @@ from .base import BaseCost
 from ..data.simulation import SimulationData
 from ..data.utils import B1Calculator, SARCalculator
 
-import numpy as np
-from ..data.utils import B1Calculator, SARCalculator
-
 
 class B1HomogeneitySARCost(BaseCost):
     def __init__(self,
