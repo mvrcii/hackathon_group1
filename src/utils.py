@@ -23,13 +23,15 @@ def evaluate_coil_config(coil_config: CoilConfig,
     simulation_data_default = simulation(default_coil_config)
 
     # Calculate cost for both configurations
-    default_coil_config_cost = cost_function(simulation_data_default)
-    best_coil_config_cost = cost_function(simulation_data)
+    default_coil_config_cost = cost_function(simulation_data_default).numpy()
+    best_coil_config_cost = cost_function(simulation_data).numpy()
 
     # Calculate cost improvement
     cost_improvement_absolute = best_coil_config_cost - default_coil_config_cost
     cost_improvement_relative = (best_coil_config_cost - default_coil_config_cost) / default_coil_config_cost
 
+    simulation_data.field = simulation_data.field.numpy()
+    simulation_data_default.field = simulation_data_default.field.numpy()
     # Create a dictionary to store the results
     result = {
         "best_coil_phase": list(coil_config.phase),

@@ -2,7 +2,6 @@ from .base import BaseCost
 from ..data.simulation import SimulationData
 from ..data.utils import B1Calculator
 from ..data.utils import SARCalculator
-
 import numpy as np
 
 

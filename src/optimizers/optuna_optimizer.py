@@ -133,7 +133,7 @@ class OptunaOptimizer(BaseOptimizer):
                 objective,
                 timeout=(end_time - time.time()),
                 n_jobs=-1,  # Use all available CPU cores
-                show_progress_bar=True,
+                show_progress_bar=False,
                 catch=(optuna.exceptions.TrialPruned,)
             )
         except KeyboardInterrupt:

@@ -5,7 +5,7 @@ from src.optimizers.optuna_optimizer import OptunaOptimizer
 
 def run(simulation: Simulation,
         cost_function: BaseCost,
-        timeout: int = 300) -> CoilConfig:
+        timeout: int = 10) -> CoilConfig:
     """
         Main function to run the optimization, returns the best coil configuration
 

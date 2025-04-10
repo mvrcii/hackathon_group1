@@ -1,6 +1,6 @@
 import numpy as np
 from .dataclasses import SimulationData
-
+import torch as t
 class B1Calculator:
     """
     Class to calculate B1 field from simulation data.
@@ -16,7 +16,24 @@ class B1Calculator:
         b_field_complex = b_field[0] + 1j*b_field[1]
         b1_plus = 0.5*(b_field_complex[0] + 1j*b_field_complex[1])
         return b1_plus
-    
+
+
+class B1Calculator_torch:
+    """
+    Class to calculate B1 field from simulation data.
+    """
+
+    def __call__(self, simulation_data: SimulationData) -> t.Tensor:
+        return self.calculate_b1_field(simulation_data)
+
+    def calculate_b1_field(self, simulation_data: SimulationData) -> np.ndarray:
+        b_field = simulation_data.field[1]
+
+        # b1_plus = b_x + i*b_y
+        b_field_complex = b_field[0] + 1j * b_field[1]
+        b1_plus = 0.5 * (b_field_complex[0] + 1j * b_field_complex[1])
+        return b1_plus
+
 
 class SARCalculator:
     """
@@ -33,6 +50,26 @@ class SARCalculator:
         # get the conductivity and density tensors
         conductivity = simulation_data.properties[0]
         density = simulation_data.properties[2]
+
+        pointwise_sar = conductivity*abs_efield_sq/density
+        return pointwise_sar
+
+
+class SARCalculator_torch:
+    """
+    Class to calculate SAR from simulation data.
+    """
+
+    def __call__(self, simulation_data: SimulationData) -> t.Tensor:
+        return self.calculate_sar(simulation_data)
+
+    def calculate_sar(self, simulation_data: SimulationData) -> t.Tensor:
+        e_field = simulation_data.field[0]
+        abs_efield_sq = t.sum(e_field**2, axis=(0,1))
+
+        # get the conductivity and density tensors
+        conductivity = t.from_numpy(simulation_data.properties[0])
+        density = t.from_numpy(simulation_data.properties[2])
 
         pointwise_sar = conductivity*abs_efield_sq/density
         return pointwise_sar
