@@ -19,7 +19,7 @@ def setup_logging():
         datefmt="[%X]",
         handlers=[RichHandler(rich_tracebacks=True)]
     )
-    optuna.logging.enable_propagation()
+    optuna.logging.disable_propagation()
     optuna.logging.disable_default_handler()
 
 

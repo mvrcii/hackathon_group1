@@ -93,9 +93,9 @@ class OptunaOptimizer(BaseOptimizer):
                 raise optuna.exceptions.TrialPruned("Time limit approaching")
 
             # Suggest parameters for phase and amplitude for 8 coils.
-            phase = np.array([trial.suggest_float(f"phase_{i}", 0, 2 * np.pi)
+            phase = np.array([trial.suggest_float(f"phase_{i}", 0, 1.8 * np.pi)
                               for i in range(8)])
-            amplitude = np.array([trial.suggest_float(f"amplitude_{i}", 0.2, 1)
+            amplitude = np.array([trial.suggest_float(f"amplitude_{i}", 0.2, 0.8)
                                   for i in range(8)])
 
             # Create configuration, run simulation and compute cost.
@@ -137,8 +137,9 @@ class OptunaOptimizer(BaseOptimizer):
 
         # --- Phase 2: Refinement with CMA-ES ---
         # Initialize CMA-ES with TPE's best parameters.
+        pruner = pruner=optuna.pruners.SuccessiveHalvingPruner()
         cmaes_sampler = optuna.samplers.CmaEsSampler(x0=best_tpe_trial.params)
-        cmaes_study = optuna.create_study(direction=self.direction, sampler=cmaes_sampler)
+        cmaes_study = optuna.create_study(direction=self.direction, sampler=cmaes_sampler, pruner=pruner)
         logging.info("Starting CMA-ES refinement phase...")
 
         try:
@@ -198,8 +199,8 @@ class OptunaOptimizer(BaseOptimizer):
             params[f"amplitude_{i}"] = config.amplitude[i]
 
         distributions = {
-            **{f"phase_{i}": optuna.distributions.FloatDistribution(0, 2 * np.pi) for i in range(8)},
-            **{f"amplitude_{i}": optuna.distributions.FloatDistribution(0.2, 1) for i in range(8)}
+            **{f"phase_{i}": optuna.distributions.FloatDistribution(0, 1.8 * np.pi) for i in range(8)},
+            **{f"amplitude_{i}": optuna.distributions.FloatDistribution(0.2, 0.8) for i in range(8)}
         }
 
         return optuna.trial.create_trial(
