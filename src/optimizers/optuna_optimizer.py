@@ -120,7 +120,9 @@ class OptunaOptimizer(BaseOptimizer):
                 if self.verbose:
                     improvement = abs(cost_value - default_cost) / abs(default_cost) * 100
                     relation = ("better" if cost_value > default_cost else "worse")
-                    logging.info(f"New best: {cost_value:.6f} ({relation} than default by {improvement:.2f}%)")
+                    timestamp = time.time() - start_time
+                    logging.info(f"{timestamp:.2f}s - New best: {cost_value:.6f} ({relation} than default by {improvement:.2f}%)")
+
             return cost_value
 
         # --- Phase 1: Warm-up with TPE ---
