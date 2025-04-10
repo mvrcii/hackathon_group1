@@ -23,9 +23,11 @@ def setup_logging():
     optuna.logging.disable_default_handler()
 
 
-def save_results(sim_path, result, lambda_weight=None, timeout=300):
+def save_results(sim_path, cost_fn, result, lambda_weight=None, timeout=300):
+    cost_fn_name = cost_fn.__class__.__name__
     sim_name = os.path.basename(sim_path).split(".")[0]
-    target_dir = os.path.join("results", sim_name)
+
+    target_dir = os.path.join("results", cost_fn_name, sim_name)
     os.makedirs(target_dir, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -46,15 +48,15 @@ if __name__ == "__main__":
     setup_logging()
 
     timeout = 300
-    lambda_weight = None
+    lambda_weight = 100.0
 
     sim_path = "data/simulations/children_0_tubes_2_id_19969.h5"
     simulation = Simulation(sim_path)
-    cost_function = B1HomogeneitySARCost()  # lambda = 100 is default
+    cost_function = B1HomogeneitySARCost(weight=lambda_weight)
 
     # Run optimization
     best_coil_config = run(simulation=simulation, cost_function=cost_function, timeout=timeout)
 
     # Evaluate best coil configuration
     result = evaluate_coil_config(best_coil_config, simulation, cost_function)
-    save_results(sim_path, result, lambda_weight, timeout)
+    save_results(sim_path, cost_function, result, lambda_weight, timeout)

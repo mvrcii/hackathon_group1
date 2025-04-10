@@ -32,7 +32,7 @@ class OptunaOptimizer(BaseOptimizer):
     def __init__(
             self,
             cost_function: BaseCost,
-            timeout: int = 100,
+            timeout: int = 300,
             time_buffer_seconds: int = 2,
             warmup_timeout_pct: float = .05,
             verbose: bool = True
