@@ -6,3 +6,4 @@ matplotlib
 tqdm
 jupyter
 optuna
+cmaes
