@@ -14,14 +14,13 @@ class OptunaOptimizer(BaseOptimizer):
     """
     Coil configuration optimizer using Optuna for efficient parameter search.
     Employs a two-phase optimization strategy:
-      - Phase 1: TPE warmup with a fixed number of startup trials.
+      - Phase 1: TPE warmup with a specified warmup time.
       - Phase 2: Refinement with CMA-ES until the timeout.
 
     Attributes:
         cost_function (BaseCost): The cost function to evaluate configurations.
         max_time_seconds (int): Total allowed optimization time (in seconds).
         time_buffer_seconds (int): A buffer to ensure safe termination before the timeout.
-        n_startup_trials (int): Number of trials to run during the TPE warmup phase.
         verbose (bool): If True, logs progress and update messages.
         direction (str): Optimization direction ("maximize" or "minimize").
         history (dict): Records details about each trial.
@@ -137,7 +136,7 @@ class OptunaOptimizer(BaseOptimizer):
 
         # --- Phase 2: Refinement with CMA-ES ---
         # Initialize CMA-ES with TPE's best parameters.
-        pruner = pruner=optuna.pruners.SuccessiveHalvingPruner()
+        pruner = optuna.pruners.SuccessiveHalvingPruner()
         cmaes_sampler = optuna.samplers.CmaEsSampler(x0=best_tpe_trial.params)
         cmaes_study = optuna.create_study(direction=self.direction, sampler=cmaes_sampler, pruner=pruner)
         logging.info("Starting CMA-ES refinement phase...")
