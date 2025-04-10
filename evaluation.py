@@ -46,7 +46,7 @@ def save_results(sim_path, result, lambda_weight=None, timeout=300):
 if __name__ == "__main__":
     setup_logging()
 
-    timeout = 300
+    timeout = 20
     lambda_weight = None
 
     sim_path = "data/simulations/children_0_tubes_2_id_19969.h5"

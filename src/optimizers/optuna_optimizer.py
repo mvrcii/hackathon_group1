@@ -129,7 +129,7 @@ class OptunaOptimizer(BaseOptimizer):
         logging.info(f"Starting TPE warm-up for {self.n_startup_trials} trials...")
         tpe_sampler = optuna.samplers.TPESampler(seed=42)
         tpe_study = optuna.create_study(direction=self.direction, sampler=tpe_sampler)
-        tpe_study.optimize(objective_fn, n_trials=self.n_startup_trials, n_jobs=-1)
+        tpe_study.optimize(objective_fn, timeout=5, n_jobs=-1)
         best_tpe_trial = tpe_study.best_trial
 
         logging.info(f"Finished TPE warm-up. Best value so far: {best_tpe_trial.value:.6f}")
@@ -137,7 +137,7 @@ class OptunaOptimizer(BaseOptimizer):
 
         # --- Phase 2: Refinement with CMA-ES ---
         # Initialize CMA-ES with TPE's best parameters.
-        cmaes_sampler = optuna.samplers.CmaEsSampler(x0=best_tpe_trial.params, seed=43)
+        cmaes_sampler = optuna.samplers.CmaEsSampler(x0=best_tpe_trial.params)
         cmaes_study = optuna.create_study(direction=self.direction, sampler=cmaes_sampler)
         logging.info("Starting CMA-ES refinement phase...")
 
