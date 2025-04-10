@@ -1,8 +1,11 @@
+import numpy as np
+
 from .base import BaseCost
 from ..data.simulation import SimulationData
 from ..data.utils import B1Calculator, SARCalculator
 
 import numpy as np
+from ..data.utils import B1Calculator, SARCalculator
 
 
 class B1HomogeneitySARCost(BaseCost):
@@ -29,8 +32,4 @@ class B1HomogeneitySARCost(BaseCost):
         peak_sar = np.max(sar_subject_voxels)
         peak_sar_sqrt = np.sqrt(peak_sar)
         min_b1 = np.min(b1_field_subject_voxels)
-        print("one_over_cov", one_over_cov)
-        print("peak_sar", peak_sar)
-        print("peak_sar_sqrt", peak_sar_sqrt)
-        print("min_b1", min_b1)
         return one_over_cov + self.weight * min_b1 / peak_sar_sqrt
