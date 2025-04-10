@@ -7,7 +7,7 @@ from src.data import Simulation
 from src.utils import evaluate_coil_config
 
 if __name__ == "__main__":
-    timeout = 1
+    timeout = 300
     lambda_weight = 0.10
 
     simulation = Simulation("data/simulations/children_0_tubes_2_id_19969.h5")
