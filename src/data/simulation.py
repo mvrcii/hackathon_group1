@@ -92,7 +92,7 @@ class Simulation:
             coil_config.amplitude
         )  # shape (2,2,3,#mask_vox,8)
 
-        field_shifted = np.zeros(field.shape[:-1], dtype=field.dtype)  # coil dimension removed
+        field_shifted = np.zeros(field.shape[:-1])  # coil dimension removed
         field_shifted[..., mask] = shifted_in_mask  # shape (2,2,3,#mask)
 
         simulation_data = SimulationData(
