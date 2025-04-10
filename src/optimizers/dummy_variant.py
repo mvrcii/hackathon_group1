@@ -39,7 +39,7 @@ class DVOptimizer(BaseOptimizer):
 
         init_coil_config=self._sample_coil_config()
 
-        pbar = trange(int(1.4*self.max_iter))
+        pbar = trange(int(3*self.max_iter))
         for i in pbar:
             new_coil_config = self._sample_single_change(init_coil_config)
             #calculate solution with current parameters

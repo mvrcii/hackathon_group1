@@ -7,3 +7,4 @@ tqdm
 jupyter
 optuna
 cmaes
+numba
