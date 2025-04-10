@@ -37,6 +37,7 @@ class OptunaOptimizer(BaseOptimizer):
             verbose: bool = True
     ):
         super().__init__(cost_function)
+        timeout = timeout - 10
         self.max_time_seconds = timeout
         self.warmup_timeout = warmup_timeout_pct * timeout if timeout > 30 else None
         self.time_buffer_seconds = time_buffer_seconds
