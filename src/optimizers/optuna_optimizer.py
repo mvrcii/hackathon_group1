@@ -34,13 +34,13 @@ class OptunaOptimizer(BaseOptimizer):
             cost_function: BaseCost,
             timeout: int = 100,
             time_buffer_seconds: int = 2,
-            n_startup_trials: int = 250,
+            warmup_timeout_pct: float = .05,
             verbose: bool = True
     ):
         super().__init__(cost_function)
         self.max_time_seconds = timeout
+        self.warmup_timeout = warmup_timeout_pct * timeout if timeout > 30 else None
         self.time_buffer_seconds = time_buffer_seconds
-        self.n_startup_trials = n_startup_trials
         self.verbose = verbose
         self.direction = "maximize" if cost_function.direction == "maximize" else "minimize"
 
@@ -126,10 +126,10 @@ class OptunaOptimizer(BaseOptimizer):
             return cost_value
 
         # --- Phase 1: Warm-up with TPE ---
-        logging.info(f"Starting TPE warm-up for {self.n_startup_trials} trials...")
+        logging.info(f"Starting TPE warm-up for {self.warmup_timeout} seconds...")
         tpe_sampler = optuna.samplers.TPESampler(seed=42)
         tpe_study = optuna.create_study(direction=self.direction, sampler=tpe_sampler)
-        tpe_study.optimize(objective_fn, timeout=5, n_jobs=-1)
+        tpe_study.optimize(objective_fn, timeout=self.warmup_timeout, n_jobs=-1)
         best_tpe_trial = tpe_study.best_trial
 
         logging.info(f"Finished TPE warm-up. Best value so far: {best_tpe_trial.value:.6f}")
