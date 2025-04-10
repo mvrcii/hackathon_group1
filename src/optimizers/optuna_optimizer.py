@@ -4,6 +4,7 @@ import time
 import numpy as np
 import optuna
 from optuna.trial import TrialState
+from rich.logging import RichHandler
 
 from .base import BaseOptimizer
 from ..costs.base import BaseCost
@@ -37,6 +38,16 @@ class OptunaOptimizer(BaseOptimizer):
             verbose: bool = True
     ):
         super().__init__(cost_function)
+
+        logging.basicConfig(
+            level=logging.INFO,  # or another level
+            format="%(message)s",
+            datefmt="[%X]",
+            handlers=[RichHandler(rich_tracebacks=True)]
+        )
+        optuna.logging.disable_propagation()
+        optuna.logging.disable_default_handler()
+
         timeout = timeout - 10
         self.max_time_seconds = timeout
         self.warmup_timeout = warmup_timeout_pct * timeout if timeout > 30 else None
