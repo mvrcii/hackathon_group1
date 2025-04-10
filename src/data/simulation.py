@@ -1,11 +1,12 @@
-import time
-import numpy.typing as npt
-import numpy as np
-import h5py
 import os
-import einops
-
+import time
 from typing import Tuple
+
+import einops
+import h5py
+import numpy as np
+import numpy.typing as npt
+
 from src.data.dataclasses import SimulationRawData, SimulationData, CoilConfig
 
 
@@ -78,7 +79,21 @@ class Simulation:
         return field_shift
 
     def phase_shift(self, coil_config: CoilConfig) -> SimulationData:
-        field_shifted = self._shift_field(self.simulation_raw_data.field, coil_config.phase, coil_config.amplitude)
+        field = self.simulation_raw_data.field
+        mask = self.simulation_raw_data.subject
+
+        # 1) Extract only masked voxels: shape e.g. (2,2,3,#mask_vox,8)
+        field_in_mask = field[..., mask, :]
+
+        # 2) Shift field in the reduced array
+        shifted_in_mask = self._shift_field(
+            field_in_mask,
+            coil_config.phase,
+            coil_config.amplitude
+        )  # shape (2,2,3,#mask_vox,8)
+
+        field_shifted = np.zeros(field.shape[:-1], dtype=field.dtype)  # coil dimension removed
+        field_shifted[..., mask] = shifted_in_mask  # shape (2,2,3,#mask)
 
         simulation_data = SimulationData(
             simulation_name=self.simulation_raw_data.simulation_name,
