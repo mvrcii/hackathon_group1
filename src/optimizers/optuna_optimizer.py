@@ -32,8 +32,8 @@ class OptunaOptimizer(BaseOptimizer):
     def __init__(
             self,
             cost_function: BaseCost,
-            timeout: int = 280,
-            time_buffer_seconds: int = 10,
+            timeout: int = 300,
+            time_buffer_seconds: int = 5,
             warmup_timeout_pct: float = .05,
             verbose: bool = True
     ):
@@ -48,7 +48,7 @@ class OptunaOptimizer(BaseOptimizer):
         optuna.logging.disable_propagation()
         optuna.logging.disable_default_handler()
 
-        timeout = timeout - 10
+        timeout = timeout - 5
         self.max_time_seconds = timeout
         self.warmup_timeout = warmup_timeout_pct * timeout if timeout > 30 else None
         self.time_buffer_seconds = time_buffer_seconds
